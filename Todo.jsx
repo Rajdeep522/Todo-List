@@ -47,12 +47,35 @@ export default function Todo(){
 
     let Done=(
         (id)=>{
+            setTaskList(
+            (prevtask)=>
+                prevtask.map(
+                    (tk)=>{
+                        if(tk.id===id){
+                            return{
+                                ...tk, isDone: true
+                            }
+                        }else{
+                            return tk;
+                        }
+                    }
+                )
+        )
+            
 
         }
     )
 
-    let DoneALL = (() => {
+    let toStyleDone=(tk)=> {
+        return tk.isDone ? { textDecoration: 'line-through'} : {};
+    }
 
+    let DoneALL = (() => {
+        setTaskList((prevtask) =>
+            prevtask.map((tk) => {
+                return { ...tk, isDone: true }
+            })
+        );
     });
    
     return (
@@ -68,7 +91,7 @@ export default function Todo(){
                     {taskList.map((tk) => (
                         <li key={tk.id}> 
                             <br />
-                            <span className="line-through">{tk.tk}</span>
+                            <span style={toStyleDone(tk)}>{tk.tk}</span>
                              &nbsp;&nbsp;
                             <button className="bg-red-600" onClick={()=>deleteTask(tk.id)}>delete</button> &nbsp; &nbsp;
                             <button className="bg-blue-500" onClick={()=>updateone(tk.id)}>edit</button>&nbsp; &nbsp;
@@ -78,8 +101,8 @@ export default function Todo(){
                         ))}
                 </ul>
                 <br />
-                <button className="bg-yellow-400" onClick={updateUppercaseALL}>edit all</button> <br /> <br />
-                <button className="bg-green-800 text-white" onClick={DoneALL}>edit all</button>
+                <button className="bg-yellow-400" onClick={updateUppercaseALL}>edit all</button> <br/> <br/>
+                <button className="bg-green-800 text-white" onClick={DoneALL}>Mark as Done all</button>
                        
                 
             </div>
